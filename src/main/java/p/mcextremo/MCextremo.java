@@ -2,14 +2,11 @@ package p.mcextremo;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import p.mcextremo.chat.ChatHandler;
-import p.mcextremo.commads.ConfigReloadManager;
-import p.mcextremo.commads.ReloadConfigsCommand;
+import p.mcextremo.commads.VidasCommand;
 import p.mcextremo.events.SistemaPvP;
 import p.mcextremo.events.vidas;
 import p.mcextremo.hard.EventManager;
@@ -31,9 +28,17 @@ public final class MCextremo extends JavaPlugin {
     private EventManager eventManager;
 
     private boolean pvpActivo = false;
-    private Configuracion config;
     private ChatHandler chatHandler;
-    private ConfigReloadManager configReloadManager;
+
+    private static long cooldownEndTime = 0;
+
+    public static long getCooldownEndTime() {
+        return cooldownEndTime;
+    }
+
+    public static void setCooldownEndTime(long endTime) {
+        cooldownEndTime = endTime;
+    }
 
 
     @Override
@@ -47,20 +52,12 @@ public final class MCextremo extends JavaPlugin {
             saveResource("config.yml", false);
         }
 
-        // Cargar configuración 'ajustes.yml'
-        Configuracion.cargarYConfigurar(this);
-
-        // Configuración 'chat.yml'
-        File chatFile = new File(getDataFolder(), "chat.yml");
-        if (!chatFile.exists()) {
-            saveResource("chat.yml", false);
-        }
-
-        configReloadManager = new ConfigReloadManager(this);
 
 
-        this.vidasManager = new vidas();
-        chatHandler = new ChatHandler(new vidas(), this);
+
+
+        this.vidasManager = new vidas(this);
+        chatHandler = new ChatHandler(new vidas(this), this);
         this.saveDefaultConfig();
         reloadConfig();
         updateChecker();
@@ -68,8 +65,9 @@ public final class MCextremo extends JavaPlugin {
         eventManager = new EventManager(this);
         getServer().getPluginManager().registerEvents(new SpectatorListener(this), this);
         getServer().getPluginManager().registerEvents(vidasManager, this);
-        this.getServer().getPluginManager().registerEvents(new SistemaPvP(this, 3600), this); // 3600 segundos (1 hora) de duración del PvP
+        this.getServer().getPluginManager().registerEvents(new SistemaPvP(this, 3600), this);
         getServer().getPluginManager().registerEvents(chatHandler, this);
+        getCommand("vidas").setExecutor(new VidasCommand(vidasManager, this));
 
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -81,9 +79,6 @@ public final class MCextremo extends JavaPlugin {
         // Plugin startup logic
 
     }
-    public static int getVidasRestantes(Player player) {
-        return vidasManager.getVidasRestantes(player);
-    }
 
     public boolean isPvPActivo() {
         return pvpActivo;
@@ -92,31 +87,14 @@ public final class MCextremo extends JavaPlugin {
     public void setPvPActivo(boolean nuevoEstadoPvP) {
         pvpActivo = nuevoEstadoPvP;
     }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("vidas")) {
-            if (sender instanceof Player) {
-                Player jugador = (Player) sender;
-                int vidasRestantes = getVidasRestantes(jugador);
-                jugador.sendMessage(MessageUtils.sendCenteredMessage(" "));
-                jugador.sendMessage(MessageUtils.sendCenteredMessage(Configuracion.getPrefijo()));
-                jugador.sendMessage(MessageUtils.sendCenteredMessage(" "));
-                jugador.sendMessage(MessageUtils.sendCenteredMessage(Configuracion.getVidas() + " " +  vidasRestantes + "❤"));
-                jugador.sendMessage(MessageUtils.sendCenteredMessage(" "));
-                jugador.sendMessage(MessageUtils.sendCenteredMessage(Configuracion.getDeveloper()));
-                jugador.sendMessage(MessageUtils.sendCenteredMessage(" "));
-                return true;
-            }
-        }
-        return false;
-    }
     public EventManager getEventManager() {
         return eventManager;
     }
 
 
-
+    public static int getVidasRestantes(Player player) {
+        return vidasManager.getVidasRestantes(player);
+    }
 
     public void updateChecker(){
         try {
@@ -129,7 +107,7 @@ public final class MCextremo extends JavaPlugin {
             if (latestversion.length() <= 7) {
                 if(!version.equals(latestversion)){
                     Bukkit.getConsoleSender().sendMessage(MessageUtils.sendCenteredMessage(" "));
-                    Bukkit.getConsoleSender().sendMessage(MessageUtils.sendCenteredMessage(Configuracion.getPrefijo()));
+                    Bukkit.getConsoleSender().sendMessage(MessageUtils.sendCenteredMessage("§x§F§B§0§0§0§0§lM§x§D§C§0§0§0§0§lC §x§B§C§0§0§0§0§lE§x§9§D§0§0§0§0§lX§x§7§E§0§0§0§0§lT§x§5§E§0§0§0§0§lR§x§3§F§0§0§0§0§lE§x§1§F§0§0§0§0§lM§x§0§0§0§0§0§0§lO"));
                     Bukkit.getConsoleSender().sendMessage(MessageUtils.sendCenteredMessage(" "));
                     Bukkit.getConsoleSender().sendMessage(MessageUtils.sendCenteredMessage("§7Nueva version de Plugin descargala:"));
                     Bukkit.getConsoleSender().sendMessage(MessageUtils.sendCenteredMessage("§chttps://karmancos.42web.io/download/mcextremo.html"));
@@ -140,7 +118,7 @@ public final class MCextremo extends JavaPlugin {
             }
         } catch (Exception ex) {
             Bukkit.getConsoleSender().sendMessage(MessageUtils.sendCenteredMessage(" "));
-            Bukkit.getConsoleSender().sendMessage(MessageUtils.sendCenteredMessage(Configuracion.getPrefijo()));
+            Bukkit.getConsoleSender().sendMessage(MessageUtils.sendCenteredMessage("§x§F§B§0§0§0§0§lM§x§D§C§0§0§0§0§lC §x§B§C§0§0§0§0§lE§x§9§D§0§0§0§0§lX§x§7§E§0§0§0§0§lT§x§5§E§0§0§0§0§lR§x§3§F§0§0§0§0§lE§x§1§F§0§0§0§0§lM§x§0§0§0§0§0§0§lO"));
             Bukkit.getConsoleSender().sendMessage(MessageUtils.sendCenteredMessage(" "));
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED +"Error while checking update.");
             Bukkit.getConsoleSender().sendMessage(MessageUtils.sendCenteredMessage("§fFrom Team Karmancos Studio"));

@@ -19,86 +19,18 @@ import java.util.Map;
 public class ChatHandler implements Listener {
 
     private vidas vidasManager;
-    private FileConfiguration config;
-    private JavaPlugin plugin;
+    private MCextremo plugin;
     private Map<Character, String> fontMappings;
-    private boolean chatEnabled;
-    private boolean chatFormatEnabled;
-    private String heartSymbol;
-    private String playerPrefix1;
-    private String playerPrefix2;
-    private String playerSuffix;
 
-    public ChatHandler(vidas vidasManager, JavaPlugin plugin) {
+    public ChatHandler(vidas vidasManager, MCextremo plugin) {
         this.vidasManager = vidasManager;
         this.plugin = plugin;
         this.fontMappings = createFontMappings();
-
-        reloadConfig();
     }
-
-    public void reloadConfig() {
-        // Guardar el archivo de configuración predeterminado si no existe
-        saveDefaultConfig();
-
-        // Cargar configuración desde el archivo
-        config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "chat.yml"));
-
-        // Obtener valores de la configuración
-        this.chatEnabled = config.getBoolean("enabled", true);
-        this.chatFormatEnabled = config.getBoolean("formato", true);
-        this.playerPrefix1 = config.getString("playerPrefix1", "§f[§x§F§B§0§0§7§1❤");
-        this.playerPrefix2 = config.getString("playerPrefix2", "§f] ");
-        this.playerSuffix = config.getString("playerSuffix", "§7»§x§9§E§F§3§F§B");
-
-
-    }
-
-    public void saveConfig() {
-        // Guardar configuración en el archivo
-        try {
-            config.save(new File(plugin.getDataFolder(), "chat.yml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean isChatEnabled() {
-        return chatEnabled;
-    }
-
-    public boolean isChatFormatEnabled() {
-        return chatFormatEnabled;
-    }
-
-    public String getPlayerPrefix1() {
-        return playerPrefix1;
-    }
-
-    public String getPlayerPrefix2() {
-        return playerPrefix2;
-    }
-
-    public String getPlayerSuffix() {
-        return playerSuffix;
-    }
-
-    // Puedes añadir métodos adicionales según tus necesidades
-
-    private void saveDefaultConfig() {
-        File configFile = new File(plugin.getDataFolder(), "chat.yml");
-        if (!configFile.exists()) {
-            plugin.saveResource("chat.yml", false);
-        }
-    }
-
-
 
     private Map<Character, String> createFontMappings() {
         // Define aquí tus mapeos de letra a letra con la fuente que deseas
         Map<Character, String> mappings = new HashMap<>();
-
-        // Mapeos para letras minúsculas
         mappings.put('a', "ᴀ");
         mappings.put('b', "ʙ");
         mappings.put('c', "ᴄ");
@@ -125,9 +57,7 @@ public class ChatHandler implements Listener {
         mappings.put('x', "x");
         mappings.put('y', "ʏ");
         mappings.put('z', "ᴢ");
-        // ... agrega más mapeos según tus necesidades
 
-        // Mapeos para letras mayúsculas
         mappings.put('A', "ᴀ");
         mappings.put('B', "ʙ");
         mappings.put('C', "ᴄ");
@@ -155,50 +85,36 @@ public class ChatHandler implements Listener {
         mappings.put('Y', "ʏ");
         mappings.put('Z', "ᴢ");
         mappings.put('%', " ");
-        // ... agrega más mapeos según tus necesidades
 
         return mappings;
     }
 
-
-    private String parsePlaceholders(String input) {
-        // Reemplazar los placeholders utilizando PlaceholderAPI si está disponible
-        if (plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            input = PlaceholderAPI.setPlaceholders(null, input);
-        }
-        return input;
-    }
-
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        if (!chatEnabled) {
-            // Chat deshabilitado, no hacer nada
-            return;
-        }
+        FileConfiguration config = plugin.getConfig();
 
-        Player jugador = event.getPlayer();
-        int vidasRestantes = MCextremo.getVidasRestantes(jugador);
+        if (config.getBoolean("chat.toggle.chat")) {
 
-        // Formato del mensaje en el chat: [❤vidasRestantes] jugador: mensaje
-        String mensajeOriginal = event.getMessage();
-        StringBuilder mensajeFormateado = new StringBuilder("");
+            Player jugador = event.getPlayer();
+            int vidasRestantes = MCextremo.getVidasRestantes(jugador);
 
-        if (chatFormatEnabled) {
-            // Aplicar formato solo si está habilitado
-            for (char letra : mensajeOriginal.toCharArray()) {
-                // Reemplazar cada letra según tus mapeos de fuente
-                String letraFormateada = fontMappings.getOrDefault(letra, String.valueOf(letra));
-                mensajeFormateado.append(letraFormateada);
+            String messageOriginal = event.getMessage();
+            StringBuilder messageFormat = new StringBuilder("");
+
+            if (config.getBoolean("chat.toggle.format")) {
+                for (char letra : messageOriginal.toCharArray()) {
+                    String letraFormateada = fontMappings.getOrDefault(letra, String.valueOf(letra));
+                    messageFormat.append(letraFormateada);
+                }
+            } else {
+                messageFormat.append(messageOriginal);
             }
-        } else {
-            mensajeFormateado.append(mensajeOriginal);
+            String chat = config.getString("chat.view");
+
+            String messageEnd = chat.replace("%vidas%", String.valueOf(vidasRestantes)) + jugador.getName() + messageFormat.toString();
+
+            event.setFormat(ChatColor.translateAlternateColorCodes('&', messageEnd));
         }
-
-        // Integración del placeholder %mcextremo_vidas_restantes%
-        String mensajeFinal = playerPrefix1 + vidasRestantes + playerPrefix2 + jugador.getName() + " " + playerSuffix + " " + mensajeFormateado.toString();
-
-        // Establecer el formato del evento de chat
-        event.setFormat(ChatColor.translateAlternateColorCodes('&', mensajeFinal));
     }
 }
 
