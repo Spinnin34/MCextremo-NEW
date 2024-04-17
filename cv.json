@@ -1,0 +1,243 @@
+{
+  "basics": {
+    "name": "Ahmed Omrane (Spinnin34)",
+    "label": "Minecraft plugin & Java/Kotlin Developer con más de 1 años de experiencia",
+    "image": "/me.jpeg",
+    "email": "ahmedomrane398@gmail.com",
+    "phone": "",
+    "url": "https://spinnin34.netlify.app/",
+    "summary": "+1 años de experiencia en el desarrollo de plugins para servidores de Minecraft. Actualmente estoy trabajando como desarrollador de plugins para Zestian Network. He trabajado con distintas tecnología como MySQL entre otras, y lenguajes de programación como Java y Kotlin.",
+    "location": {
+      "address": "",
+      "postalCode": "33420",
+      "city": "Oviedo",
+      "countryCode": "ES",
+      "region": "España"
+    },
+    "profiles": [
+      {
+        "network": "X",
+        "username": "Spinnin34",
+        "url": "https://x.com/Spinnin34"
+      },
+      {
+        "network": "GitHub",
+        "username": "Spinnin34",
+        "url": "https://github.com/Spinnin34"
+      },
+      {
+        "network": "Discord",
+        "username": "",
+        "url": "https://discord.com/users/807665320088829973"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Zestian",
+      "position": "Java plugin Developer",
+      "url": "https://discord.gg/Y3WQCbFBmw",
+      "startDate": "2023-12-6",
+      "endDate": null,
+      "summary": "Desarrollo de plugins personalizados para el servidor. Mantenimiento de plugins existentes. Desarrollo de nuevas funcionalidades.",
+      "highlights": [
+        "Started the company"
+      ]
+    },
+    {
+      "name": "Karmancos Studio",
+      "position": "Lead Developer & System Administrator",
+      "url": "https://discord.gg/q5ftfyxW4w",
+      "startDate": "2020-10-03",
+      "endDate": null,
+      "summary": "Lideré el equipo de desarrollo y configuración del servidor. Administré los sistemas del servidor y su infraestructura. Formé y orienté a los nuevos miembros del equipo.",
+      "highlights": [
+        "Started the company"
+      ]
+    },
+    {
+      "name": "MineHades",
+      "position": "Developer",
+      "url": null,
+      "startDate": "2023-10-03",
+      "endDate": "2023-12-03",
+      "summary": "Ayudé en el desarrollo de la network y en la corrección de bugs dentro de la misma, además de contribuir con la incorporación de nuevos plugins de soporte y ayuda con la llegada de nuevas versiones.",
+      "highlights": [
+        "Started the company"
+      ]
+    },
+    {
+      "name": "TeamBrody",
+      "position": "Leader Developer",
+      "url": "https://discord.gg/MSQZ5wNKJy",
+      "startDate": "2024-4-03",
+      "endDate": null,
+      "summary": "Recién estoy comenzando. Estoy desarrollando un núcleo y ayudando con diversas pruebas de eventos en el estudio. Además de eso, estoy orientando al equipo de desarrollo para mejorar la experiencia de trabajo, así como implementando plugins personalizados en el estudio.",
+      "highlights": [
+        "Started the company"
+      ]
+    },
+    {
+      "name": "Nea Network",
+      "position": "Leader Developer",
+      "url": null,
+      "startDate": "2023-7-21",
+      "endDate": "2024-1-30",
+      "summary": "Rediseñé casi toda la infraestructura de la network, cambiando al proxy Velocity, además de implementar sistemas de membresías premium y la integración de más de 19 plugins personalizados, creando una experiencia única. Es una lástima que la network haya tenido que cerrar.",
+      "highlights": [
+        "Started the company"
+      ]
+    },
+    {
+      "name": "Plugin Soporte",
+      "position": "Helper Developer",
+      "url": null,
+      "startDate": "2023-1-21",
+      "endDate": null,
+      "summary": "Ayudante de soporte de plugins, ayudando en la formación de personas con las habilidades necesarias para crear plugins de Minecraft.",
+      "highlights": [
+        "Started the company"
+      ]
+    }
+  ],
+  "volunteer": [{
+    "organization": "Organization",
+    "position": "Volunteer",
+    "url": "https://organization.com/",
+    "startDate": "2012-01-01",
+    "endDate": "2013-01-01",
+    "summary": "Description…",
+    "highlights": [
+      "Awarded 'Volunteer of the Month'"
+    ]
+  }],
+  "education": [{
+    "institution": "Agorastur",
+    "url": "https://agorastur.es/fp-grado-medio-sistemas-microinformaticos-y-redes",
+    "area": "Técnico en Sistemas Microinformáticos y Redes",
+    "studyType": "Bachelor",
+    "startDate": "2023-13-18",
+    "endDate": null,
+    "score": "4.0",
+    "courses": [
+      "DB1101 - Basic SQL"
+    ]
+  }],
+  "awards": [{
+    "title": "Award",
+    "date": "2014-11-01",
+    "awarder": "Company",
+    "summary": "There is no spoon."
+  }],
+  "certificates": [{
+    "name": "Certificate",
+    "date": "2021-11-07",
+    "issuer": "Company",
+    "url": "https://certificate.com"
+  }],
+  "publications": [{
+    "name": "Publication",
+    "publisher": "Company",
+    "releaseDate": "2014-10-01",
+    "url": "https://publication.com",
+    "summary": "Description…"
+  }],
+  "skills": [
+    {
+      "name": "Java",
+      "level": "Master",
+      "keywords": [
+        "Backend"
+      ]
+    },
+    {
+      "name": "Kotlin",
+      "level": "Master",
+      "keywords": [
+        "Backend"
+      ]
+    },
+    {
+      "name": "MySQL",
+      "level": "Avanzado",
+      "keywords": [
+        "Bases de Datos", "SQL", "Almacenamiento de Datos", "Backend"
+      ]
+    },
+    {
+      "name": "HTML",
+      "level": "Master",
+      "keywords": [
+        "Desarrollo Web", "Frontend"
+      ]
+    },
+    {
+      "name": "CSS",
+      "level": "Master",
+      "keywords": [
+        "Desarrollo Web", "Frontend", "Diseño Responsive"
+      ]
+    },
+    {
+      "name": "GitHub",
+      "level": "Avanzado",
+      "keywords": [
+        "Control de Versiones", "Colaboración", "Código Fuente", "Git"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "Spanish",
+      "fluency": "Native speaker"
+    },
+    {
+      "language": "English",
+      "fluency": "Medium"
+    }
+  ],
+  "interests": [{
+    "name": "Wildlife",
+    "keywords": [
+      "Ferrets",
+      "Unicorns"
+    ]
+  }],
+  "references": [{
+    "name": "Jane Doe",
+    "reference": "Reference…"
+  }],
+  "projects": [
+    {
+      "name": "MC Extremo",
+      "isActive": true,
+      "description": "Crea un mc extremo con pocos plugins",
+      "highlights": [
+        "Fácil de usar",
+        "Completamente configurable",
+        "Compatible PAPI"
+      ],
+      "url": "https://karmancos.42web.io/download/mcextremo.html?i=1",
+      "github": "https://github.com/Spinnin34/MCextremo-NEW"
+    },
+    {
+      "name": "RTP Karmancos",
+      "isActive": true,
+      "description": "Sistema de teleportación aleatoria con zonas seguras para evitar muertes.",
+      "highlights": [
+        "Completamente configurable"
+      ],
+      "url": "https://karmancos.42web.io/download/kr-rtp.html?i=1"
+    },
+    {
+      "name": "PlayerHide",
+      "isActive": true,
+      "description": "Gestor de la visiblidad de los jugadores",
+      "highlights": [
+        "Multilenguaje",
+        "Completamente configurable"
+      ],
+      "url": "https://karmancos.42web.io/download/playerhide.html?i=1"
+    }
+  ]
+}
