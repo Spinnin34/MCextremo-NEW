@@ -4,8 +4,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import p.mcextremo.Configuracion;
-import p.mcextremo.MCextremo;
 
 public class ComandoMCExtremo implements CommandExecutor {
     private final JavaPlugin plugin;

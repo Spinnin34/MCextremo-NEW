@@ -48,10 +48,12 @@ public class variables extends PlaceholderExpansion {
             String eventName = plugin.getEventManager().getCurrentEventName();
             return (eventName != null) ? eventName : "No hay evento activo";
         } else if (identifier.equals("tiempo_pvp")) {
-            if (isCooldownActive()) {
+            long cooldownEndTime = MCextremo.getCooldownEndTime();
+            if (cooldownEndTime > System.currentTimeMillis()) {
+                // El cooldown está activo, mostrar el tiempo restante
                 return formatTime((int) ((cooldownEndTime - System.currentTimeMillis()) / 1000));
             } else {
-                setGlobalCooldown(); // Establecer el cooldown global
+                // No hay cooldown, mostrar el tiempo hasta el próximo evento
                 int timeUntilNextEvent = plugin.getEventManager().getTimeUntilNextEvent();
                 return formatTime(timeUntilNextEvent);
             }

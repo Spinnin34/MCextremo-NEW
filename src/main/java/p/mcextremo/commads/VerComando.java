@@ -26,7 +26,6 @@ public class VerComando implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        // Verificar si se proporcionó un jugador como argumento
         if (args.length >= 1) {
             String targetPlayerName = args[0];
             Player targetPlayer = Bukkit.getPlayer(targetPlayerName);

@@ -5,12 +5,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import p.mcextremo.hard.events.EternalNightEvent;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class EventManager {
 
@@ -18,13 +16,13 @@ public class EventManager {
     private final Map<String, Integer> playerCounters = new HashMap<>();
     private String currentEventName;
     private int timeUntilNextEvent;
-    private EternalNightEvent eternalNightEvent;  // Agrega esta línea
+    private EternalNightEvent eternalNightEvent;
 
     public EventManager(JavaPlugin plugin) {
         this.plugin = plugin;
         this.currentEventName = null;
         this.timeUntilNextEvent = 0;
-        this.eternalNightEvent = null;  // Agrega esta línea
+        this.eternalNightEvent = null;
     }
 
     public int incrementCounter(Player player) {
@@ -37,18 +35,13 @@ public class EventManager {
     }
 
     public void startRandomEvent(Player player) {
-        // Lógica para determinar el evento aleatorio
         if (Math.random() < 0.5) {
-            // Ejemplo: Iniciar el evento de Noche Eterna
             startEternalNightEvent(player.getWorld());
         } else {
-            // Ejemplo: Iniciar otro tipo de evento (puedes añadir más casos aquí)
             startOtherRandomEvent(player);
         }
     }
     private void startOtherRandomEvent(Player player) {
-        // Lógica para otro tipo de evento (puedes añadir más casos aquí)
-        // Ejemplo: Iniciar un evento aleatorio diferente
         int randomNumber = (int) (Math.random() * 3);  // Generar un número aleatorio (ejemplo: 0, 1 o 2)
 
         switch (randomNumber) {
