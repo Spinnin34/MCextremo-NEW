@@ -1,20 +1,20 @@
 package p.mcextremo.events;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import p.mcextremo.Configuracion;
 import p.mcextremo.MCextremo;
 import p.mcextremo.mensaje.MessageUtils;
 
-import java.util.Random;
+import java.util.List;
 
 public class SistemaPvP implements Listener {
+
 
     private MCextremo plugin;
     private boolean pvpActivo;
@@ -26,50 +26,52 @@ public class SistemaPvP implements Listener {
         this.duracionPvP = duracionPvP;
         this.tiempoRestante = duracionPvP;
 
-        Configuracion.cargarYConfigurar(plugin);
-
         // Iniciar el sistema de PvP
         iniciarSistemaPvP();
     }
     private void iniciarSistemaPvP() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (tiempoRestante > 0) {
-                    tiempoRestante--;
-                } else {
-                    pvpActivo = !pvpActivo;
 
-                    if (pvpActivo) {
-                        activarPvP();
-                        plugin.setPvPActivo(true);
+        FileConfiguration config = plugin.getConfig();
 
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getPrefijo()));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getMensajeActivado()));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getDeveloper()));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                        enviarTitulosGlobal(Configuracion.getTitulo(), Configuracion.getMensajeActivado());
+        if (config.getBoolean("pvp.toggle")) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (tiempoRestante > 0) {
+                        tiempoRestante--;
                     } else {
-                        desactivarPvP();
-                        plugin.setPvPActivo(false);
+                        pvpActivo = !pvpActivo;
 
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getPrefijo()));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getMensajeDesactivado()));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getDeveloper()));
-                        enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                        enviarTitulosGlobal(Configuracion.getTitulo(), Configuracion.getMensajeDesactivado());
+                        if (pvpActivo) {
+                            activarPvP();
+
+                            plugin.setPvPActivo(true);
+
+                            List<String> mensajes = config.getStringList("pvp.activate.text");
+                            for (String mensaje : mensajes) {
+                                sendMessageALL(MessageUtils.sendCenteredMessage(mensaje));
+                            }
+
+                            sendTitleALL(config.getString("prefix"), config.getString("toggle.activate"));
+                        } else {
+                            desactivarPvP();
+
+                            plugin.setPvPActivo(false);
+
+                            List<String> mensajes = config.getStringList("pvp.deactivated.text");
+
+                            for (String mensaje : mensajes) {
+                                sendMessageALL(MessageUtils.sendCenteredMessage(mensaje));
+                            }
+
+                            sendTitleALL(config.getString("prefix"), config.getString("toggle.deactivated"));
+                        }
+
+                        tiempoRestante = duracionPvP;
                     }
-
-                    tiempoRestante = duracionPvP;
                 }
-            }
-        }.runTaskTimer(plugin, 0, 20); // Se ejecuta cada segundo
+            }.runTaskTimer(plugin, 0, 20); // Se ejecuta cada segundo
+        }
     }
 
     private void activarPvP() {
@@ -84,18 +86,13 @@ public class SistemaPvP implements Listener {
         }
     }
 
-    private boolean generarEventoPvP() {
-        Random random = new Random();
-        return random.nextBoolean();
-    }
-
-    private void enviarMensajeGlobal(String mensaje) {
+    private void sendMessageALL(String mensaje) {
         Bukkit.broadcastMessage(mensaje);
         String.valueOf(pvpActivo);
 
     }
 
-    private void enviarTitulosGlobal(String titulo, String subtitulo) {
+    private void sendTitleALL(String titulo, String subtitulo) {
         for (Player jugador : Bukkit.getOnlinePlayers()) {
             jugador.sendTitle(titulo, subtitulo, 10, 70, 20);
         }
@@ -107,44 +104,43 @@ public class SistemaPvP implements Listener {
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        FileConfiguration config = plugin.getConfig();
         String comando = event.getMessage().toLowerCase();
-        Player jugador = event.getPlayer();
+        Player player = event.getPlayer();
 
         if (comando.startsWith("/pvp on")) {
-            if (jugador.hasPermission("mcextremo.pvp.on")) {
+            if (player.hasPermission("mcextremo.pvp.on")) {
 
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getPrefijo()));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getMensajeActivado()));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getDeveloper()));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                enviarTitulosGlobal(Configuracion.getTitulo(), Configuracion.getMensajeActivado());
+                List<String> mensajes = config.getStringList("pvp.activate.text");
+                for (String mensaje : mensajes) {
+                    sendMessageALL(MessageUtils.sendCenteredMessage(mensaje));
+                }
+                
+                sendTitleALL(config.getString("prefix"), config.getString("toggle.activate"));
 
                 pvpActivo = true;
                 plugin.setPvPActivo(true);
                 event.setCancelled(true);
             } else {
-                jugador.sendMessage(ChatColor.RED + "No tienes permisos para activar el PvP.");
+                player.sendMessage(config.getString("prefix" + " " + "notperms"));
             }
         } else if (comando.startsWith("/pvp off")) {
-            if (jugador.hasPermission("mcextremo.pvp.off")) {
+            if (player.hasPermission("mcextremo.pvp.off")) {
+                
+                
+                List<String> mensajes = config.getStringList("pvp.deactivated.text");
 
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getPrefijo()));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getMensajeDesactivado()));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage(Configuracion.getDeveloper()));
-                enviarMensajeGlobal(MessageUtils.sendCenteredMessage("§c"));
-                enviarTitulosGlobal(Configuracion.getTitulo(), Configuracion.getMensajeDesactivado());
+                for (String mensaje : mensajes) {
+                    sendMessageALL(MessageUtils.sendCenteredMessage(mensaje));
+                }
+                
+                sendTitleALL(config.getString("prefix"), config.getString("toggle.deactivated"));
 
                 pvpActivo = false;
                 plugin.setPvPActivo(false);
                 event.setCancelled(true);
             } else {
-                jugador.sendMessage(ChatColor.RED + "No tienes permisos para desactivar el PvP.");
+                player.sendMessage(config.getString("prefix" + " " + "notperms"));
             }
         }
     }
